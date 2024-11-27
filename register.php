@@ -1,4 +1,5 @@
 <?php 
+  include "cfg/dbconnect.php";
   include "topmenu.php";
 ?>
 <div class="container">
