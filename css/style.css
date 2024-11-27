@@ -34,3 +34,10 @@ form {
   margin: auto;
   padding: 30px;
 }
+
+.input-err {
+  height: 10px;
+  font-size: 0.875rem;
+  opacity: 0.75;
+  margin-left: 4px;
+}

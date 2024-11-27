@@ -92,7 +92,7 @@
   </div>
 
   <form action="" method="post">
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="name" class="form-label">Name</label>
       <input
         type="text"
@@ -102,10 +102,10 @@
         placeholder="Enter your Name"
         value="<?= $name?>"
       />
-      <div class="text-danger"><?= $name_err ?></div>
+      <div class="text-danger input-err"><?= $name_err ?></div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="email" class="form-label">Email</label>
       <input
         type="text"
@@ -115,10 +115,10 @@
         placeholder="Enter your Email"
         value="<?= $email?>"
       />
-      <div class="text-danger"><?= $email_err ?></div>
+      <div class="text-danger input-err"><?= $email_err ?></div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="pwd" class="form-label">Password</label>
       <input
         type="password"
@@ -127,10 +127,10 @@
         id="pwd"
         placeholder="Enter your password"
       />
-      <div class="text-danger"><?= $pwd_err ?></div>
+      <div class="text-danger input-err"><?= $pwd_err ?></div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="conf_pwd" class="form-label">Confirm Password</label>
       <input
         type="password"
@@ -139,7 +139,7 @@
         id="conf_pwd"
         placeholder="Confirm password"
       />
-      <div class="text-danger"><?= $conf_pwd_err ?></div>
+      <div class="text-danger input-err"><?= $conf_pwd_err ?></div>
     </div>
 
     <div class="form-check">
