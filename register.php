@@ -149,7 +149,8 @@
         id=""
         type="checkbox"
         value="checkedValue"
-        aria-label="Text for screen reader"
+        aria-label="Show Password Checkbox"
+        onclick="showPwd()"
       /> Show Password
       <div class="text-danger"></div>
     </div>
@@ -166,5 +167,25 @@
     <p>Already Registerd? Login <a href="login.php">here</a></p>
   </form>
 </div>
+
+<script>
+  function showPwd() {
+    let pwd = document.getElementById("pwd");
+    let conf_pwd = document.getElementById("conf_pwd");
+    console.log(conf_pwd)
+
+    if (pwd.type === "text") {
+      pwd.type = "password";
+    } else {
+      pwd.type = "text";
+    }
+
+    if (conf_pwd.type === "text") {
+      conf_pwd.type = "password";
+    } else {
+      conf_pwd.type = "text";
+    }
+  }
+</script>
 </body>
 </html>
