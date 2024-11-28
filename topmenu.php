@@ -1,3 +1,9 @@
+<?php 
+  if(!isset($_SESSION) || session_id() === "" || session_status() === PHP_SESSION_NONE) {
+    session_start();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,10 +22,18 @@
 <body>
   <div class="topmenu">
     <ul class="menubar">
+      <?php 
+        if(isset($_SESSION['name'])) { ?>
+          <li class="user">
+            <span>Welcome <?= $_SESSION['name'] ?></span>
+            <a href="logout.php">Logout</a></li>
+      <?php 
+        } else { ?>
       <li><a href="index.php">Home</a></li>
       <li><a href="register.php">Register</a></li>
       <li><a href="login.php">Login</a></li>
-      <li><a href="logout.php">Logout</a></li>
+      <?php 
+        } ?>
     </ul>
   </div>
   
