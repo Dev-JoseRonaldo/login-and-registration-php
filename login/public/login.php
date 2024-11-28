@@ -8,7 +8,7 @@
 
   $error = false;
 
-  if(isset($_POST['submit'])) {
+  if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $email = trim($_POST['email']);
     $pwd = trim($_POST['pwd']);
 

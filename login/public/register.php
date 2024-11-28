@@ -6,7 +6,7 @@
 
   $error = false;
 
-  if(isset($_POST['submit'])) {
+  if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $pwd = trim($_POST['pwd']);
@@ -16,6 +16,11 @@
     if($name == "") {
       $name_err = "Please enter Name";
       $error = true;
+    }
+
+    $email_regex = "/^[\w\-]+@[\w\-]+.[\w\-]+$/";
+    if(!preg_match($email_regex, $email)) {
+      $error = "Please enter a valid email!";
     }
 
     if($email == "") {
