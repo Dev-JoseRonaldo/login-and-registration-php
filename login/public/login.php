@@ -1,7 +1,7 @@
 <?php
   session_start();
   
-  include "cfg/dbconnect.php";
+  include "../private/cfg/dbconnect.php";
   $email = $pwd = "";
   $email_err = $pwd_err = "";
   $err_msg = "";

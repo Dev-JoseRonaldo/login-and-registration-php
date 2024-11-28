@@ -1,5 +1,5 @@
 <?php 
-  include "cfg/dbconnect.php";
+  include "../private/cfg/dbconnect.php";
   $name = $email = $pwd = $conf_pwd = "";
   $name_err = $email_err = $pwd_err = $conf_pwd_err = "";
   $succ_msg = $err_msg = "";
