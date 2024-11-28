@@ -12,6 +12,10 @@
     $email = trim($_POST['email']);
     $pwd = trim($_POST['pwd']);
 
+    if (isset($_POST['remember'])) {
+      $remember = $_POST['remember'];
+    }
+
     //validate inputs
     if($email == "") {
       $email_err = "Please enter Email";
@@ -37,6 +41,17 @@
         if (password_verify($pwd, $stored_pwd)) {
           $_SESSION['name'] = $row['name'];
           header("location:index.php");
+
+          if(isset($_POST['remember'])) {
+            // add cookie
+              setcookie("remember_email", $email, time() + 365*24*60*60);
+              setcookie("remember", $remember, time() + 365*24*60*60);
+          } else {
+            // delete cookie
+            setcookie("remember_email", $email, time() - 365*24*60*60);
+            setcookie("remember", $remember, time() - 365*24*60*60);
+          }
+
         } else {
           $err_msg = "Incorrect Email or Password";
         }
@@ -58,6 +73,11 @@
   </div>
 
   <form action="" method="post">
+    <?php 
+      $display_email = isset($_COOKIE['remember_email']) ? $_COOKIE['remember_email'] : $email;
+
+      $checked = isset($_COOKIE['remember']) ? "checked" : (!empty($remember) ? "checked" : "");
+    ?>
     <div class="mb-4">
       <label for="email" class="form-label">Email</label>
       <input
@@ -66,7 +86,7 @@
         name="email"
         id="email"
         placeholder="Enter your Email"
-        value="<?= $email?>"
+        value="<?= $display_email?>"
       />
       <div class="text-danger input-err"><?= $email_err ?></div>
     </div>
@@ -91,6 +111,7 @@
         type="checkbox"
         value="checkedValue"
         aria-label="Remember me Checkbox"
+        <?= $checked ?>
       /> Remember me
       <div class="text-danger"></div>
     </div>
