@@ -1,5 +1,4 @@
 <?php
-  session_start();
   
   require "../private/autoload.php";
   $email = $pwd = "";
@@ -48,14 +47,15 @@
         $row = $result->fetch_assoc();
         $stored_pwd = $row['password'];
         if (password_verify($pwd, $stored_pwd)) {
-          // reseta a sessão
-
+          // Limpar sessão anterior, caso haja alguma
           session_unset();
           session_destroy();
-          session_start();
-
+          session_start();  // Iniciar uma nova sessão
+          session_regenerate_id(true);  // Regenera o ID da sessão
           $_SESSION['name'] = $row['name'];
-          header("location:index.php");
+
+          header("Location: index.php");
+          exit;
 
           if(isset($_POST['remember'])) {
             // add cookie
