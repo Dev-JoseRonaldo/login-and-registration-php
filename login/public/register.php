@@ -1,5 +1,6 @@
 <?php 
-  include "../private/cfg/dbconnect.php";
+  // include "../private/cfg/dbconnect.php";
+  require "../private/autoload.php";
   $name = $email = $pwd = $conf_pwd = "";
   $name_err = $email_err = $pwd_err = $conf_pwd_err = "";
   $succ_msg = $err_msg = "";
@@ -13,26 +14,38 @@
     $conf_pwd = trim($_POST['conf_pwd']);
 
     //validate inputs
+    $email_regex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+    $name_regex = "/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/";
+    
+    if(!preg_match($name_regex, $name)) {
+      $name_err = "Please enter a valid name!";
+      $error = true;
+    }
+    
+    if(!preg_match($email_regex, $email)) {
+      $email_err = "Please enter a valid email!";
+      $error = true;
+    }
+    
     if($name == "") {
       $name_err = "Please enter Name";
       $error = true;
     }
 
-    $email_regex = "/^[\w\-]+@[\w\-]+.[\w\-]+$/";
-    if(!preg_match($email_regex, $email)) {
-      $error = "Please enter a valid email!";
-    }
-
     if($email == "") {
       $email_err = "Please enter Email";
       $error = true;
-    } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $email_err = "Invalid Email format";
-      $error = true;
-    } else {
+    } 
+    // elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      // $email_err = "Invalid Email format";
+      // $error = true;
+    // } 
+    else {
+      $email_escaped = esc($email);
+
       $sql = "select * from users where email = ?";
       $stmt = $conn->prepare($sql);
-      $stmt->bind_param("s", $email);
+      $stmt->bind_param("s", $email_escaped);
       $stmt->execute();
       $result = $stmt->get_result();
 
@@ -63,11 +76,16 @@
     // se não deu erro, continua o cadastro
     if (!$error) {
       $pwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+      $name_escaped = esc($name);
+      $email_escaped = esc($email);
+      $pwd_escaped = esc($pwd);
+
       $sql = "insert into users (name, email, password) values (?, ?, ?)";
 
       try {
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $name, $email, $pwd);
+        $stmt->bind_param("sss", $name_escaped, $email_escaped, $pwd_escaped);
         $stmt->execute();
         $succ_msg = "Registration sucessful. Please login <a href='login.php'>here</a>";
       } catch(Exception $e) {

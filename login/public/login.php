@@ -1,7 +1,7 @@
 <?php
   session_start();
   
-  include "../private/cfg/dbconnect.php";
+  require "../private/autoload.php";
   $email = $pwd = "";
   $email_err = $pwd_err = "";
   $err_msg = "";
@@ -20,7 +20,14 @@
     if($email == "") {
       $email_err = "Please enter Email";
       $error = true;
-    } 
+    }
+
+    $email_regex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+    
+    if(!preg_match($email_regex, $email)) {
+      $email_err = "Please enter a valid email!";
+      $error = true;
+    }
 
     if($pwd == "") {
       $pwd_err = "Please enter Password";
@@ -29,9 +36,11 @@
 
     // se não deu erro, continua o login
     if (!$error) {
+      $email_escaped = esc($email);
+
       $sql = "select * from users where email = ?";
       $stmt = $conn->prepare($sql);
-      $stmt->bind_param("s", $email);
+      $stmt->bind_param("s", $email_escaped);
       $stmt->execute();
       $result = $stmt->get_result();
 
@@ -39,6 +48,12 @@
         $row = $result->fetch_assoc();
         $stored_pwd = $row['password'];
         if (password_verify($pwd, $stored_pwd)) {
+          // reseta a sessão
+
+          session_unset();
+          session_destroy();
+          session_start();
+
           $_SESSION['name'] = $row['name'];
           header("location:index.php");
 
