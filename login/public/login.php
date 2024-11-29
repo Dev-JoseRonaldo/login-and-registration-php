@@ -49,7 +49,12 @@ function process_remember_me($email, $remember) {
     }
 }
 
-if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] == "POST") {
+if (isset($_POST['submit']) && 
+    $_SERVER['REQUEST_METHOD'] == "POST" && 
+    isset($_SESSION['token']) &&
+    isset($_POST['token']) &&
+    $_SESSION['token'] == $_POST['token']) {
+
     $email = trim($_POST['email']);
     $pwd = trim($_POST['pwd']);
     $remember = isset($_POST['remember']) ? $_POST['remember'] : null;
@@ -85,6 +90,9 @@ if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 }
+
+// token anti csrf
+$_SESSION['token'] = get_random_string(60);
 ?>
 
 <div class="container-md">
@@ -140,6 +148,8 @@ if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] == "POST") {
             /> Remember me
             <div class="text-danger"></div>
         </div>
+
+        <input type="hidden" name="token" value="<?=$_SESSION['token']?>"/>
 
         <div class="text-center mb-4">
             <button
